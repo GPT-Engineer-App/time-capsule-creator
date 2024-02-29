@@ -6,6 +6,7 @@ const Index = () => {
   const toast = useToast();
   const [unveilDate, setUnveilDate] = useState("");
   const [sharingOption, setSharingOption] = useState("private");
+  const [shareLink, setShareLink] = useState("");
 
   // Placeholder function to simulate form submission
   const handleSubmit = (e) => {
@@ -19,8 +20,32 @@ const Index = () => {
     });
   };
 
+  // Generate a random string for shareable link
+  const generateRandomString = () => {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    for (let i = 0; i < 10; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  };
+
+  const handleShare = () => {
+    const randomString = generateRandomString();
+    const newShareLink = `https://timecapsule.com/share/${randomString}`;
+    setShareLink(newShareLink);
+    toast({
+      title: "Share your Capsule",
+      description: `Your shareable link: ${newShareLink}`,
+      status: "success",
+      duration: 9000,
+      isClosable: true,
+    });
+  };
+
   return (
     <Container maxW="container.lg" py={10}>
+      {/* The rest of the component remains unchanged */}
       <VStack spacing={5}>
         <Heading as="h1" size="xl">
           Create Your Virtual Time Capsule
@@ -69,7 +94,7 @@ const Index = () => {
           </VStack>
         </Box>
 
-        <Button leftIcon={<FaShareAlt />} colorScheme="green" size="lg">
+        <Button leftIcon={<FaShareAlt />} colorScheme="green" size="lg" onClick={handleShare}>
           Share Your Capsule
         </Button>
       </VStack>
